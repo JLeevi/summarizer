@@ -1,0 +1,3 @@
+Summarize the following with bulletpoints:
+
+Our project focuses on summarization of blog texts using the GPT-3 transformer. The aim is to generate an abstractive summarization of the blog based on the text of the blog. We’ll evaluate the performance of our model using both human-centric evaluation and untrained automated tests. Our human-centric metrics are based on a variant of the Turing test, by testing whether the test audience can differentiate between a machine generated summarization and a human-generated summarization provided by us. As automated tests we’ll use cosine similarity with our summarization using Word2vec semantic vectors or BERTScore. Our other tests are based on evaluating fluency and grammatical errors using the BLEU, ROUGE-N and METEOR metrics. 
