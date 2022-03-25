@@ -22,4 +22,4 @@ def load_wiki_lingua(amount: int):
     
     return orig_texts, abstr_summaries
     
-print(load_wiki_lingua(1))
+# print(load_wiki_lingua(1))

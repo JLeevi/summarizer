@@ -1,51 +1,40 @@
-from datasets import load_dataset
+import json
 from typing import List
-import numpy as np
+from datetime import datetime, date
 
-def list_to_str(sentences: List[str]):
-    string = ""
-    for sentence in sentences:
-        string += sentence + " "
+from load_data.scitldr import load_scitldr
+from load_data.wiki_lingua import load_wiki_lingua
+from load_data.xlsum import load_xlsum
+from settings import training_amount, validation_amount
+from utility import get_prompt
+
+
+# Create dataset based on the distribution provided
+def create_dataset(distribution: dict):
+    # Download original datasets and their summaries
+    sci_texts, sci_summaries = load_scitldr(distribution["scitldr"])
+    wiki_texts, wiki_summaries = load_wiki_lingua(distribution["wiki_lingua"])
+    xlsum_texts, xlsum_summaries = load_xlsum(distribution["xlsum"])
     
-    return [string.rstrip()]
-  
-def filter_1000_words(text: str):
-    return len(text[0].split()) <= 1000
+    # Concatenate the individual lists to single lists
+    texts: List[str] = sci_texts + wiki_texts + xlsum_texts
+    summaries: List[str] = sci_summaries + wiki_summaries + xlsum_summaries
+    
+    # Create the dictionary with the prompt and the original text as key, and the summary as the value
+    plain_prompt = get_prompt("../data/prompt.txt")
+    text_to_summary = { f"{plain_prompt}\n\n{text}":summary for text, summary in zip(texts, summaries) }
+    
+    # Get the current date and time
+    today = date.today()
+    current_date = today.strftime("%b-%d-%Y") # MM-DD-YY
 
-################################################################
-# Wiki_lingua
-################################################################
-
-wiki_lingua = load_dataset("wiki_lingua", "english")
-print(f"wiki_lingua: {wiki_lingua}")
-
-################################################################
-# Science tldr
-################################################################
-
-scitldr = load_dataset("scitldr", "AIC")["train"][:100] # or "Abstract"
-sci_src = scitldr["source"]
-sci_src = list(map(lambda x: list_to_str(x), sci_src))
-sci_src = np.array(list(filter(lambda x: filter_1000_words(x), sci_src)))
-sci_target = scitldr["target"]
-
-print(len(sci_src))
-print(sci_target)
-
-################################################################
-# Cnn_dailymail
-################################################################
-
-cnn_dailymail = load_dataset("cnn_dailymail", "3.0.0")["train"][:2]
-cnn_src = cnn_dailymail["article"]
-cnn_target = cnn_dailymail["highlights"] 
-
-print(cnn_src)
-print(cnn_target)
-
-# ################################################################
-# # XL_sum
-# ################################################################
-
-xl_sum = load_dataset("csebuetnlp/xlsum", "english")["train"]
-print(xl_sum)
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S") # HH:MM:SS
+    
+    # Write the data into a jsonl-file
+    with open(f"../data/training/{current_date}_{current_time}.jsonl", 'w') as f:
+        for prompt, summary in text_to_summary.items():
+            line = { "prompt": prompt, "completion": summary}
+            f.write(json.dumps(line) + "\n")
+    
+create_dataset(training_amount)

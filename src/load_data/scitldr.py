@@ -1,5 +1,4 @@
 from datasets import load_dataset
-from typing import List, NamedTuple
 
 def load_scitldr(amount: int):
     dataset = load_dataset("scitldr", "AIC")["train"]# or "Abstract"
@@ -27,4 +26,4 @@ def load_scitldr(amount: int):
         
     return orig_texts, abstr_summaries
     
-print(load_scitldr(1))
+# print(load_scitldr(1))

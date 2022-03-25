@@ -21,4 +21,4 @@ def load_xlsum(amount: int):
     
     return orig_texts, abstr_summaries
     
-print(load_xlsum(2))
+# print(load_xlsum(2))

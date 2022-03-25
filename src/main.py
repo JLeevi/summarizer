@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from dotenv import load_dotenv
 from Summarizer import Summarizer
 from setup import setup
+from utility import get_prompt
 
 load_dotenv()
 setup()
@@ -9,10 +10,6 @@ setup()
 app = FastAPI()
 
 summarizer = Summarizer()
-
-def get_prompt(filename):
-    with open(filename, 'r') as f:
-        return f.read()
 
 def request_completion(prompt: str):
     text = summarizer.complete(prompt)
