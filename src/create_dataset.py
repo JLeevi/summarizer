@@ -5,7 +5,7 @@ from datetime import datetime, date
 from load_data.scitldr import load_scitldr
 from load_data.wiki_lingua import load_wiki_lingua
 from load_data.xlsum import load_xlsum
-from settings import training_amount, validation_amount
+from settings import training_amount, validation_amount, prompt_chat_bot
 from utility import get_prompt
 
 
@@ -21,8 +21,8 @@ def create_dataset(distribution: dict):
     summaries: List[str] = sci_summaries + wiki_summaries + xlsum_summaries
     
     # Create the dictionary with the prompt and the original text as key, and the summary as the value
-    plain_prompt = get_prompt("../data/prompt.txt")
-    text_to_summary = { f"{plain_prompt}\n\n{text}":summary for text, summary in zip(texts, summaries) }
+    plain_prompt = prompt_chat_bot
+    text_to_summary = { plain_prompt.replace("[#####]", text):summary for text, summary in zip(texts, summaries) }
     
     # Get the current date and time
     today = date.today()
