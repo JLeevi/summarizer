@@ -24,7 +24,7 @@ class Summarizer():
             '--n_epochs', '1',
             '--prompt_loss_weight', '0',
             '--batch_size', '2',
-            '--learning_rate_multiplier', '0.1']
+            '--learning_rate_multiplier', '0.05']
         if model_name:
             command += ['--suffix', model_name]
         self.model_name = model_name

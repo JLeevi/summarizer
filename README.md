@@ -15,8 +15,8 @@
 ### Pipeline for training
 
 #### Prepare data
-    - Download datasets
-    - Choose how many samples to draw from each dataset
+    - Download datasets     DONE
+    - Choose how many samples to draw from each dataset     DONE
     - Script to automate buildling a dataset, params
 
         `n`=how many samples

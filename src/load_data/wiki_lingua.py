@@ -13,7 +13,7 @@ def load_wiki_lingua(amount: int):
         summaries = wiki_lingua["summary"]
         
         for document, summary in zip(documents, summaries):
-            if len(document.split()) <= 1000:
+            if len(document.split()) <= 1000 and i < amount:
                 orig_texts.append(document)
                 abstr_summaries.append(summary)
                 i += 1
