@@ -5,7 +5,7 @@ from datetime import datetime, date
 from load_data.scitldr import load_scitldr
 from load_data.wiki_lingua import load_wiki_lingua
 from load_data.xlsum import load_xlsum
-from settings import training_amount, validation_amount, prompt_chat_bot, insert_summary, completion_start, completion_end
+from settings import training_amount, validation_amount, prompt_chat_bot, insert_summary, token_padding, completion_end
 from utility import get_prompt
 
 
@@ -24,7 +24,7 @@ def create_dataset(distribution: dict, training=True):
     
     # Create the dictionary with the prompt and the original text as key, and the summary as the value
     plain_prompt = prompt_chat_bot # Choose the prompt
-    text_to_summary = { plain_prompt.replace(insert_summary, text):f"{completion_start}{summary}{completion_end}" for text, summary in zip(texts, summaries) }
+    text_to_summary = { f"{token_padding}{plain_prompt.replace(insert_summary, text)}":f"{token_padding}{summary}{completion_end}" for text, summary in zip(texts, summaries) }
     
     # Get the current date and time
     today = date.today()

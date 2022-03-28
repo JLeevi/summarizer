@@ -16,21 +16,10 @@ prompt_end = "\n\n###\n\n"
 insert_summary = "[#####]"
 
 # Completion settings
-completion_start = " "
+token_padding = " "
 completion_end = " %%%%%"
 
 # Different prompts
-prompt_chat_bot = f"""Prompt: The following is a conversation between a human who wants to get a summary of a text and an AI system capable of creating abstractive summaries of text.
-
-Human: Hi, how are you doing?
-AI: Hi, I’m doing great. What can I do to help you?
-Human: Could you please summarise abstractively the following text for me?
-
-The following text:
-{insert_summary}
-
-AI: Sure, here is the summary: """
-
 prompt_basic = f"""Summarize the following text abstractively:
 
 The following text:
@@ -47,3 +36,13 @@ The following text:
 
 Summary: """
 
+prompt_chat_bot = f"""Prompt: The following is a conversation between a human who wants to get a summary of a text and an AI system capable of creating abstractive summaries of text.
+
+Human: Hi, how are you doing?
+AI: Hi, I’m doing great. What can I do to help you?
+Human: Could you please summarise abstractively the following text for me?
+
+The following text:
+{insert_summary}
+
+AI: Sure, here is the summary: """
