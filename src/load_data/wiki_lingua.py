@@ -1,14 +1,15 @@
 from datasets import load_dataset
 
-def load_wiki_lingua(amount: int):
-    dataset = load_dataset("wiki_lingua", "english")["train"]["article"]
+def load_wiki_lingua(amount: int, training=True):
+    dataset = load_dataset("wiki_lingua", "english", split="train")["article"]
     orig_texts = []
     abstr_summaries = []
     i = 0
-    idx = 0
+    idx = 1
     
     while i < amount:
-        wiki_lingua = dataset[idx]
+        index = idx if training else -idx
+        wiki_lingua = dataset[index]
         documents = wiki_lingua["document"]
         summaries = wiki_lingua["summary"]
         

@@ -1,14 +1,15 @@
 from datasets import load_dataset
 
-def load_scitldr(amount: int):
-    dataset = load_dataset("scitldr", "AIC")["train"]# or "Abstract"
+def load_scitldr(amount: int, training=True):
+    dataset = load_dataset("scitldr", "AIC", split="train")# or "Abstract"
     orig_texts = []
     abstr_summaries = []
     i = 0
-    idx = 0
+    idx = 1
     
     while i < amount:
-        scitldr = dataset[idx]
+        index = idx if training else -idx
+        scitldr = dataset[index]
 
         sci_src = scitldr["source"]
         sci_src = " ".join(sci_src)

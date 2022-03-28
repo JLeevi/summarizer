@@ -1,14 +1,15 @@
 from datasets import load_dataset
 
-def load_xlsum(amount: int):
-    dataset = load_dataset("csebuetnlp/xlsum", "english")["train"]
+def load_xlsum(amount: int, training=True):
+    dataset = load_dataset("csebuetnlp/xlsum", "english", split="train")
     orig_texts = []
     abstr_summaries = []
     i = 0
-    idx = 0
+    idx = 1
     
     while i < amount:
-        xlsum = dataset[idx]
+        index = idx if training else -idx
+        xlsum = dataset[index]
         text = xlsum["text"]
         summary = xlsum["summary"]
         
