@@ -1,8 +1,21 @@
-from Summarizer import Summarizer
-from create_dataset import create_dataset
-from hyperparams import get_random_param_options
+import os
+import sys
+import inspect
+
+# abspath = os.path.abspath(__file__)
+# dname = os.path.dirname(abspath)
+# os.chdir(dname)
+
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir) 
+
 import openai
+from create_dataset import create_dataset
+from model_training.hyperparams import get_random_param_options
+from prompt import PromptStyle
 from setup import setup
+from Summarizer import Summarizer
 from utility import get_base_model_name
 
 # Flag for safety to not accidentally
@@ -26,13 +39,6 @@ skip_train = True
 
 ##  - Save generated summarizations with model params as fstring
 
-
-
-def create_summaries():
-    # Get n text-samples from validation dataset
-    # Use model to summarize text-samples
-    # Save summaries with model id / hyperparam string
-    pass
 
 def fine_tune_exists(model_name: str):
     model_name = model_name.lower()
@@ -78,7 +84,7 @@ def create_fine_tuned_model(model_name:str, params: dict, use_validation=False):
     test_file = upload_file(test_file)
 
     summarizer = Summarizer(model_name)
-    print("Staring fine tune job...\n")
+    print("Starting fine tune job...\n")
     if use_validation:
         res = summarizer.fine_tune(params, train_file.id, test_file.id)
     else:
@@ -93,8 +99,7 @@ def fine_tune():
     for i, params in enumerate(tune_param_options, 1):
         model_name = get_base_model_name(params)
         print(f"\nFINE TUNE [{i}/{n}]: {model_name}")
-        exists = fine_tune_exists(model_name)
-        if exists:
+        if fine_tune_exists(model_name):
             print(f"{model_name} already fine-tuned")
         else:
             use_validation = (i == 1) # only use validation for the first model for now

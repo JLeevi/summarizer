@@ -1,3 +1,11 @@
+import os
+import sys
+import inspect
+
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir) 
+
 from datasets import load_metric
 from typing import List
 from transformers import GPT2Tokenizer
@@ -48,9 +56,24 @@ def calculate_bleu(predictions: List[str], references: List[str], confidence_lev
     assert n >= 1, "n has to be at least 1!"
     
     # Tokenize predictions and references
-    tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
-    preds = list(map(lambda pred: tokenizer.batch_decode(tokenizer(pred)["input_ids"]), predictions))
-    refs = [list(map(lambda ref: tokenizer.batch_decode(tokenizer(ref)["input_ids"]), references))]
+    tokenizer = GPT2Tokenizer.from_pretrained("gpt2")    
+    preds = []
+    refs = []
+    
+    for pred in predictions:
+        if pred == "":
+            preds.append([pred])
+        else:
+            preds.append(tokenizer.batch_decode(tokenizer(pred)["input_ids"]))
+
+    for ref in references:
+        if ref == "":
+            refs.append([[ref]])
+        else:
+            refs.append([tokenizer.batch_decode(tokenizer(ref)["input_ids"])])
+            
+    print(preds)
+    print(refs)
     
     # Calculate BLEU scores from 1 to n
     bleu = load_metric("bleu")
@@ -127,10 +150,13 @@ def calculate_rouge(predictions: List[str], references: List[str], confidence_le
         
     return final_scores
 
-predictions = [" We truly adored those books!"]
-references = [" I loved this book a lot!"]
+# predictions = [" We truly adored those books!", " I hated that so much"]
+# references = [" I loved this book a lot!", " I hate you."]
 
-print(calculate_meteor(predictions=predictions, references=references))
-print(calculate_bertscore(predictions=predictions, references=references))
-print(calculate_bleu(predictions=predictions, references=references))
-print(calculate_rouge(predictions=predictions, references=references))
+# print(calculate_meteor(predictions=predictions, references=references))
+# print(calculate_bertscore(predictions=predictions, references=references))
+# print(calculate_bleu(predictions=predictions, references=references))
+# print(calculate_rouge(predictions=predictions, references=references))
+
+# tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+# print(tokenizer.batch_decode(tokenizer("yees")["input_ids"]))

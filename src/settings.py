@@ -6,9 +6,9 @@ training_amount = {
 }
 
 validation_amount = {
-  "scitldr": 20,
-  "wiki_lingua": 20,
-  "xlsum": 20
+  "scitldr": 1,
+  "wiki_lingua": 1,
+  "xlsum": 1
 }
 
 # Prompt settings
@@ -25,7 +25,7 @@ prompt_basic = f"""Summarize the following text abstractively:
 The following text:
 {insert_summary}
 
-Summary: """
+Summary:"""
 
 prompt_descriptive = f"""Abstractive summarization is the task of generating a short and concise summary that captures the core ideas of the source text. The generated summaries potentially contain new phrases and sentences that may not appear in the source text. 
 
@@ -34,7 +34,7 @@ Create an abstractive summary of the following text.
 The following text: 
 {insert_summary}
 
-Summary: """
+Summary:"""
 
 prompt_chat_bot = f"""Prompt: The following is a conversation between a human who wants to get a summary of a text and an AI system capable of creating abstractive summaries of text.
 
@@ -45,4 +45,4 @@ Human: Could you please summarise abstractively the following text for me?
 The following text:
 {insert_summary}
 
-AI: Sure, here is the summary: """
+AI: Sure, here is the summary:"""

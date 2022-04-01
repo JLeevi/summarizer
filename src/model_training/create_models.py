@@ -1,5 +1,5 @@
 import openai
-from hyperparams import get_random_param_options
+from model_training.hyperparams import get_random_param_options
 from setup import setup
 from utility import get_base_model_name
 

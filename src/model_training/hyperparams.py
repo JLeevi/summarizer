@@ -1,3 +1,11 @@
+import os
+import sys
+import inspect
+
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir) 
+
 from typing import Literal
 import numpy as np
 from prompt import PromptStyle
@@ -32,10 +40,19 @@ tunable_request_params = {
 }
 
 def get_max_combinations(params):
-    i = 1
+    """Returns maximum amount of combinations with given hyperparameters
+    
+    Parameters
+    ----------
+    params (dict): dictionary with fine-tuning/completion parameters as keys and responding parameter as values
+    
+    Returns
+    -------
+    max_combinations (int): maximum number of combinations"""
+    max_combinations = 1
     for _, values in params.items():
-        i *= len(values)
-    return i
+        max_combinations *= len(values)
+    return max_combinations
 
 def contains_object(arr, b):
     for a in arr:

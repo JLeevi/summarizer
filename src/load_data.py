@@ -1,5 +1,6 @@
 from datasets import load_dataset
 from typing import List
+from settings import training_amount, validation_amount
 
 
 def load_scitldr(amount: int, training=True):
@@ -114,3 +115,27 @@ def load_xlsum(amount: int, training=True):
         idx += 1
     
     return orig_texts, abstr_summaries
+
+
+def return_text_summaries(training: bool) -> tuple[List[str], List[str]]:
+    """Loads the data from the different datasets and then the original texts and their summaries in a tuple of two lists
+    
+    Parameters
+    ----------
+    training (bool): Defines whether to use training or validation distribution
+    
+    Returns
+    -------
+    data (tuple(List[str], List[str])): Tuple of two lists, first one including the original texts and the second including the summaries."""
+    
+    distribution = training_amount if training else validation_amount
+    
+    sci_texts, sci_summaries = load_scitldr(distribution["scitldr"], training)
+    wiki_texts, wiki_summaries = load_wiki_lingua(distribution["wiki_lingua"], training)
+    xlsum_texts, xlsum_summaries = load_xlsum(distribution["xlsum"], training)
+    
+    # Concatenate the individual lists to single lists
+    texts: List[str] = sci_texts + wiki_texts + xlsum_texts
+    summaries: List[str] = sci_summaries + wiki_summaries + xlsum_summaries
+    
+    return texts, summaries

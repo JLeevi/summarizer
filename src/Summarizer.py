@@ -33,6 +33,7 @@ class Summarizer():
         summarization (str): Summarization of the given text.
         """
         params = { **self.params, "prompt": prompt }
+
         summarization = openai.Completion.create(**params)
         summarization = summarization.choices[0].text
         return summarization

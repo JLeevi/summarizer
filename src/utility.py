@@ -9,6 +9,18 @@ from settings import (
     completion_end
 )
 def create_prompt(original_text: str, prompt_style: PromptStyle):
+    """Creates prompt from original text and prompt style for correct tokenization.
+    
+    Parameters
+    ----------
+    original_text (str): Original texts
+    
+    prompt_style (PromptStyle): Defines the context for prompt creation
+    
+    Returns
+    -------
+    prompt (str): original text inserted into the the prompt context"""
+    
     plain_prompt = ""
     if prompt_style == PromptStyle.BASIC:
         plain_prompt = prompt_basic
@@ -16,11 +28,23 @@ def create_prompt(original_text: str, prompt_style: PromptStyle):
         plain_prompt = prompt_descriptive
     else:
         plain_prompt = prompt_chat_bot
-    
-    return f"{token_padding}{plain_prompt.replace(insert_summary, original_text)}{prompt_end}"
+        
+    prompt = f"{token_padding}{plain_prompt.replace(insert_summary, original_text)}{prompt_end}"
+    return prompt
 
 def create_completion(summary: str):
-    return f"{token_padding}{summary}{completion_end}"
+    """Modifies summaries to right format for correct tokenization.
+    
+    Parameters
+    ----------
+    summary (str): Original summary
+    
+    Returns
+    -------
+    modified_summary (str): modified summary with whitespace at the start and completion string in the end"""
+    
+    modified_summary = f"{token_padding}{summary}{completion_end}"
+    return modified_summary
 
 def get_base_model_name(params):
     lr = str(params["learning_rate_multiplier"]).replace('.','')
