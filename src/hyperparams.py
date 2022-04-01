@@ -70,5 +70,4 @@ def get_random_param_options(
         type == "FINE_TUNE") else fixed_request_params
     param_options = [ {**p, **fixed_params} for p in param_options ]
         
-    print(f"Done creating {n} param options!")
     return param_options

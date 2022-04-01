@@ -17,5 +17,4 @@ def request_completion(prompt: str):
 
 @app.get("/")
 def read_root():
-    prompt = get_prompt("../data/prompt.txt")
-    return request_completion(prompt)
+    request_completion("testi")

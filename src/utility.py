@@ -8,11 +8,6 @@ from settings import (
     prompt_end,
     completion_end
 )
-
-def get_prompt(filename):
-    with open(filename, 'r') as f:
-        return f.read()
-    
 def create_prompt(original_text: str, prompt_style: PromptStyle):
     plain_prompt = ""
     if prompt_style == PromptStyle.BASIC:
@@ -26,3 +21,10 @@ def create_prompt(original_text: str, prompt_style: PromptStyle):
 
 def create_completion(summary: str):
     return f"{token_padding}{summary}{completion_end}"
+
+def get_base_model_name(params):
+    lr = str(params["learning_rate_multiplier"]).replace('.','')
+    prompt_style = params["prompt_style"].name
+    model_name = f"model-{prompt_style}-{lr}"
+    model_name = model_name.lower()
+    return model_name

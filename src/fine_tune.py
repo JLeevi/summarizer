@@ -3,6 +3,11 @@ from create_dataset import create_dataset
 from hyperparams import get_random_param_options
 import openai
 from setup import setup
+from utility import get_base_model_name
+
+# Flag for safety to not accidentally
+# train new models. Set to False to actually run this file.
+skip_train = True
 
 ### MODEL FINETUNING
 
@@ -28,11 +33,6 @@ def create_summaries():
     # Use model to summarize text-samples
     # Save summaries with model id / hyperparam string
     pass
-
-def get_model_name(params):
-    lr = str(params["learning_rate_multiplier"]).replace('.','')
-    prompt_style = params["prompt_style"].name
-    return f"model_{prompt_style}_{lr}"
 
 def fine_tune_exists(model_name: str):
     model_name = model_name.lower()
@@ -86,10 +86,12 @@ def create_fine_tuned_model(model_name:str, params: dict, use_validation=False):
     print(f"Fine tune {res.id} finished \n")
 
 def fine_tune():
-    param_options = get_random_param_options(type="FINE_TUNE", get_all=True)
-    n = len(param_options)
-    for i, params in enumerate(param_options, 1):
-        model_name = get_model_name(params)
+    if skip_train:
+        return
+    tune_param_options = get_random_param_options(type="FINE_TUNE", get_all=True)
+    n = len(tune_param_options)
+    for i, params in enumerate(tune_param_options, 1):
+        model_name = get_base_model_name(params)
         print(f"\nFINE TUNE [{i}/{n}]: {model_name}")
         exists = fine_tune_exists(model_name)
         if exists:
