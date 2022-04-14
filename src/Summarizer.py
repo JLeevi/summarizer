@@ -3,6 +3,7 @@ import openai
 import os
 
 from prompt import PromptStyle
+from utility import create_prompt
 
 class Summarizer():
     def __init__(
@@ -32,7 +33,10 @@ class Summarizer():
         ----------
         summarization (str): Summarization of the given text.
         """
+        prompt = create_prompt(prompt, self.prompt_style)
         params = { **self.params, "prompt": prompt }
+        if "model" in params.keys():
+            params.pop("engine", None) # Engine can't be specified when using fine-tune
 
         summarization = openai.Completion.create(**params)
         summarization = summarization.choices[0].text
@@ -85,8 +89,9 @@ class Summarizer():
         params = {
             **params,
             "training_file": train_file_id,
-            "suffix": self.model_name
+            "suffix": self.params["model"]
             }
         if validation_file_id:
             params["validation_file"] = validation_file_id
         return openai.FineTune.create(**params)
+        

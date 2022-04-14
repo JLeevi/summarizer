@@ -1,14 +1,14 @@
 # Dataset distributions
 training_amount = {
-  "scitldr": 30,
-  "wiki_lingua": 30,
-  "xlsum": 30
+  "scitldr": 800,
+  "wiki_lingua": 400,
+  "xlsum": 800
 }
 
 validation_amount = {
-  "scitldr": 1,
-  "wiki_lingua": 1,
-  "xlsum": 1
+  "scitldr": 5,
+  "wiki_lingua": 2,
+  "xlsum": 5
 }
 
 # Prompt settings
@@ -46,3 +46,5 @@ The following text:
 {insert_summary}
 
 AI: Sure, here is the summary:"""
+
+prompt_empty = f"""{insert_summary}"""

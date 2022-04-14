@@ -1,6 +1,7 @@
 import os
 import sys
 import inspect
+from click import prompt
 
 # abspath = os.path.abspath(__file__)
 # dname = os.path.dirname(abspath)
@@ -12,7 +13,7 @@ sys.path.insert(0, parentdir)
 
 import openai
 from create_dataset import create_dataset
-from model_training.hyperparams import get_random_param_options
+from model_training.hyperparams import CURIE_MODEL, get_random_param_options
 from prompt import PromptStyle
 from setup import setup
 from Summarizer import Summarizer
@@ -91,7 +92,7 @@ def create_fine_tuned_model(model_name:str, params: dict, use_validation=False):
         res = summarizer.fine_tune(params, train_file.id)
     print(f"Fine tune {res.id} finished \n")
 
-def fine_tune():
+def fine_tune_many():
     if skip_train:
         return
     tune_param_options = get_random_param_options(type="FINE_TUNE", get_all=True)
@@ -104,8 +105,30 @@ def fine_tune():
         else:
             use_validation = (i == 1) # only use validation for the first model for now
             create_fine_tuned_model(model_name, params, use_validation)
-    
     print("Done!")
 
+def fine_tune_one_model():
+    """
+    Creates one fine-tune job with the given fixed_params and prompt_style
+    """
+    if skip_train: return None
+    fixed_params = {
+        "learning_rate_multiplier": 0.01,
+        "model": CURIE_MODEL,
+        "batch_size": 4,
+        "prompt_loss_weight": 0,
+        "n_epochs": 1
+    }
+    prompt_style = PromptStyle.EMPTY
+    model_name = get_base_model_name({**fixed_params, "prompt_style": prompt_style})
+    model_name = f"{model_name}-2000"
+    train_file = create_dataset(prompt_style=prompt_style, training=True)
+    train_file = upload_file(train_file)
+    print(f"[{model_name}]: Initialized")
+    summarizer = Summarizer(prompt_style, model_name)
+    job = summarizer.fine_tune(fixed_params, train_file.id)
+    print(f"[{model_name}]: Starting training...\n")
+    print(job)
+
 setup()
-fine_tune()
+fine_tune_one_model()

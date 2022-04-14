@@ -1,4 +1,5 @@
 import json
+import datetime
 from typing import List
 import os
 
@@ -28,7 +29,9 @@ def create_dataset(
     
     root_path: str = __file__.split("/src/")[0]
     dir_path: str = f"training" if training else "validation"
-    file_path: str = f"{root_path}/data/{dir_path}/{prompt_style.name}.jsonl"
+    timestamp = datetime.datetime.now()
+    timestamp = timestamp.strftime("%H:%M:%S")
+    file_path: str = f"{root_path}/data/{dir_path}/{prompt_style.name}-{timestamp}.jsonl"
 
     if os.path.exists(file_path) and not force_recreate:
         return file_path

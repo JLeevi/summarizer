@@ -34,9 +34,9 @@ fixed_request_params = {
 }
 
 tunable_request_params = {
-    "temperature": [0.25, 0.5, 0.75],
-    "frequency_penalty": [0.0, 0.1, 0.2],
-    "presence_penalty": [0.0, 0.1, 0.2],
+    "temperature": [0.25, 0.75],
+    "frequency_penalty": [0.0, 0.1],
+    "presence_penalty": [0.0, 0.1],
 }
 
 def get_max_combinations(params):

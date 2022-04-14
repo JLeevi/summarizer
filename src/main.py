@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from dotenv import load_dotenv
 from Summarizer import Summarizer
 from setup import setup
-from utility import get_prompt
 
 load_dotenv()
 setup()
@@ -17,4 +16,4 @@ def request_completion(prompt: str):
 
 @app.get("/")
 def read_root():
-    request_completion("testi")
+    pass

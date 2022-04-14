@@ -1,7 +1,8 @@
+import json
 import openai
-from model_training.hyperparams import get_random_param_options
+from hyperparams import get_random_param_options
 from setup import setup
-from utility import get_base_model_name
+from utility import get_base_model_name, get_final_model_name
 
 def get_base_models():
     """
@@ -28,7 +29,7 @@ def get_base_models():
     for (name, params) in base_model_names:
         # Check that name matches with a fine-tuned model
         model = next((m for m in fine_tuned_models if name in m["fine_tuned_model"]), None)
-        assert model is not None, f"Model {name} was not found in OpenAI. You need to fine tune the model first."
+        #assert model is not None, f"Model {name} was not found in OpenAI. You need to fine tune the model first."
         models.append({
             "params": params,
             "model_id": model["fine_tuned_model"]
@@ -53,8 +54,19 @@ def create_models():
     models (list[Any]): list of the created models
     """
     fine_tuned_models = get_base_models()
-    for m in fine_tuned_models:
-        print(m)
+    params = get_random_param_options('REQUEST', get_all=True)
+    models = {}
+    for model in fine_tuned_models:
+        for p in params:
+            model_id = model["model_id"]
+            fine_tune_params = model["params"]
+            name = get_final_model_name(fine_tune_params, p)
+            models[model_id] = {
+                "name": name,
+                "params": p
+            }
+    with open("models.json", "w") as f:
+        json.dump(models, f)
 
 setup()
 create_models()
