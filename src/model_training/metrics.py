@@ -106,7 +106,7 @@ def calculate_meteor(predictions: List[str], references: List[str]):
     else:
         ssl._create_default_https_context = _create_unverified_https_context
 
-    nltk.download("punkt")
+    nltk.download("punkt", quiet=True)
 
     # Calculate meteor score
     meteor = load_metric("meteor")

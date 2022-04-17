@@ -16,6 +16,8 @@ from Summarizer import Summarizer
 from utility import create_prompt
 
 
+
+
 def formatted_print(score_name: str) -> None:
     """Prints scores in a nicely formatted way
     
@@ -71,18 +73,21 @@ def create_validation_file(summarizer: Summarizer) -> str:
     return file_path
 
 
-def validate(summarizer: Summarizer) -> dict:
+def validate(summarizer: Summarizer, file_path="", force_create=False) -> dict:
     """Creates a validation file and returns the validation scores for the file
     
     Parameters
     ----------
     model (Summarizer): Summarizer class
     
+    file_path (str | False): File path to the validation file, false if doesn't exist
+    
     Returns
     -------
     scores (dict): Dictionary with names of the scores as keys and their scores as values"""
-        
-    file_path = create_validation_file(summarizer)
+    
+    if file_path == "" and force_create:
+        file_path = create_validation_file(summarizer)
     
     with open(file_path, "r") as json_file:
         sentence_pairs: List[dict] = json.load(json_file)["validation"]
@@ -118,6 +123,6 @@ def validate(summarizer: Summarizer) -> dict:
     for rouge_name, rouge_score in rouge.items():
         print(f"{rouge_name}: {rouge_score}")
     
-    # Return the scores Dictionary
+    # Return the scores dictionary
     scores = { "bertscore": bertscore, "bleu": bleu, "meteor": meteor, "rouge": rouge }
     return scores
