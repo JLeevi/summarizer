@@ -1,5 +1,12 @@
 # GPT-3 Abstractive Summarization Project
 
+## UI for summarization application
+
+1. In root directory, run `src/venv/bin/activate` to activate virtualenv
+2. Install dependencies with `pip install -r requirements.txt`
+3. Start project ui with `streamlit run app.py`
+4. Go to `localhost:8501`
+
 ## Project setup
 1. Clone the repository with `git clone <repo_name>`
 2. Create a python virtual environment with command `python -m venv <venv_name>`

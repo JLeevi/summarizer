@@ -1,8 +1,8 @@
 # Dataset distributions
 training_amount = {
-  "scitldr": 800,
-  "wiki_lingua": 400,
-  "xlsum": 800
+  "scitldr": 1000,
+  "wiki_lingua": 800,
+  "xlsum": 1200
 }
 
 validation_amount = {
