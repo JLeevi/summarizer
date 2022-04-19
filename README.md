@@ -2,9 +2,9 @@
 
 ## UI for summarization application
 
-1. In root directory, run `src/venv/bin/activate` to activate virtualenv
+1. In root directory, run `source venv/bin/activate` to activate virtualenv
 2. Install dependencies with `pip install -r requirements.txt`
-3. Start project ui with `streamlit run app.py`
+3. Start project ui with `streamlit run src/app.py`
 4. Go to `localhost:8501`
 
 ## Project setup
