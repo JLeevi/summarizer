@@ -11,7 +11,7 @@ class Summarizer():
         prompt_style: PromptStyle,
         model_name: str = None,
         max_tokens: int = 400,
-        request_params: dict[str, Any] = {}):
+        request_params: dict = {}):
         self.prompt_style = prompt_style
         self.params = {
             "engine": os.getenv('ENGINE'),

@@ -11,6 +11,8 @@ from settings import (
     prompt_end,
     completion_end
 )
+
+
 def create_prompt(original_text: str, prompt_style: PromptStyle):
     """Creates prompt from original text and prompt style for correct tokenization.
     
@@ -22,7 +24,7 @@ def create_prompt(original_text: str, prompt_style: PromptStyle):
     
     Returns
     -------
-    prompt (str): original text inserted into the the prompt context"""
+    prompt (str): original text inserted into the prompt context"""
     
     plain_prompt = ""
     if prompt_style == PromptStyle.BASIC:
@@ -69,12 +71,14 @@ def create_completion(summary: str):
     modified_summary = f"{token_padding}{summary}{completion_end}"
     return modified_summary
 
+
 def get_base_model_name(params):
     lr = str(params["learning_rate_multiplier"]).replace('.','')
     prompt_style = params["prompt_style"].name
     model_name = f"model-{prompt_style}-{lr}"
     model_name = model_name.lower()
     return model_name
+
 
 def get_final_model_name(fine_tune_params, req_params):
     lr = str(fine_tune_params["learning_rate_multiplier"]).replace('.','')
@@ -85,3 +89,12 @@ def get_final_model_name(fine_tune_params, req_params):
     model_name = f"lr-{lr}_prompt-{prompt_style}_temp-{temp}_freq-{freq_pen}_pres-{pres_pen}"
     model_name = model_name.lower()
     return model_name
+
+
+if __name__ == "__main__":
+    text = """Our project focuses on summarization of blog texts using the GPT-3 transformer. The aim is to generate an abstractive summarization of the blog based on the text of the blog. We’ll evaluate the performance of our model using both human-centric evaluation and untrained automated tests. Our human-centric metrics are based on a variant of the Turing test, by testing whether the test audience can differentiate between a machine generated summarization and a human-generated summarization provided by us. As automated tests we’ll use cosine similarity with our summarization using Word2vec semantic vectors or BERTScore. Our other tests are based on evaluating fluency and grammatical errors using the BLEU, ROUGE-N and METEOR metrics."""
+    
+    print(create_prompt(text, PromptStyle.EMPTY))
+    print(create_prompt(text, PromptStyle.BASIC))
+    print(create_prompt(text, PromptStyle.DESCRIPTIVE))
+    print(create_prompt(text, PromptStyle.CHAT))
