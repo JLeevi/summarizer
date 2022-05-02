@@ -1,9 +1,11 @@
 from prompt import PromptStyle
+import re
 from settings import (
     prompt_basic,
     prompt_chat_bot,
     prompt_descriptive,
     prompt_empty,
+    prompt_force_length,
     token_padding,
     insert_summary,
     prompt_end,
@@ -33,12 +35,27 @@ def create_prompt(original_text: str, prompt_style: PromptStyle):
         plain_prompt = prompt_chat_bot
     elif prompt_style == PromptStyle.EMPTY:
         plain_prompt = prompt_empty
+    elif prompt_style == PromptStyle.BASIC_FORCE_LENGTH:
+        plain_prompt = prompt_force_length
     else:
         raise Exception(f"Valid prompt_style missing, got {prompt_style}")
         
     prompt = f"{plain_prompt.replace(insert_summary, original_text)}{prompt_end}"
     return prompt
 
+def has_multiple_paragraphs(original_text: str):
+    """Checks if given prompt contains multiple newline tokens in row
+    
+    Parameters
+    ----------
+    text (str): text
+    
+    Returns
+    -------
+    has_multiple (bool): whether or not prompt contains multiple newlines"""
+    original_text = original_text.strip()
+    match = re.search(r'(\r?\n|\r)', original_text)
+    return match is not None
 
 def create_completion(summary: str):
     """Modifies summaries to right format for correct tokenization.

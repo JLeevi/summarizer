@@ -5,3 +5,4 @@ class PromptStyle(Enum):
     CHAT = auto()
     DESCRIPTIVE = auto()
     EMPTY = auto()
+    BASIC_FORCE_LENGTH = auto()

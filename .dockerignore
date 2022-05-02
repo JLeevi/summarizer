@@ -1,0 +1,11 @@
+# Folders
+venv
+
+# Files
+docker-compose.yml
+Dockerfile
+
+# Hidden files
+.dockerignore
+.git
+.gitignore

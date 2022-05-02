@@ -3,15 +3,15 @@ import openai
 import os
 
 from prompt import PromptStyle
-from utility import create_prompt
+from utility import create_prompt, has_multiple_paragraphs
 
 class Summarizer():
     def __init__(
         self,
         prompt_style: PromptStyle,
         model_name: str = None,
-        max_tokens: int = 80,
-        request_params: dict[str, Any] = {}):
+        max_tokens: int = 400,
+        request_params: dict = {}):
         self.prompt_style = prompt_style
         self.params = {
             "engine": os.getenv('ENGINE'),
@@ -21,7 +21,7 @@ class Summarizer():
         if model_name:
             self.params["model"] = model_name
     
-    def summarize(self, prompt: str):
+    def summarize(self, input_text: str, ttl_tries: int = 5):
         """
         Calls the OpenAI API to summarize the given prompt.
 
@@ -33,16 +33,25 @@ class Summarizer():
         ----------
         summarization (str): Summarization of the given text.
         """
-        prompt = create_prompt(prompt, self.prompt_style)
+        is_multi_paragraph = has_multiple_paragraphs(input_text)
+        if is_multi_paragraph:
+            prompt = create_prompt(input_text, PromptStyle.BASIC_FORCE_LENGTH)
+        else:
+            prompt = create_prompt(input_text, self.prompt_style)
         params = { **self.params, "prompt": prompt }
         if "model" in params.keys():
             params.pop("engine", None) # Engine can't be specified when using fine-tune
 
         summarization = openai.Completion.create(**params)
         summarization = summarization.choices[0].text
+        is_multi_paragraph = has_multiple_paragraphs(summarization)
+        if is_multi_paragraph and ttl_tries > 0:
+            return self.summarize(input_text, ttl_tries-1)
+        elif is_multi_paragraph:
+            return None
         return summarization
 
-    def set_request_params(self, **params: dict[str, Any]):
+    def set_request_params(self, **params: dict):
         """
         Sets request params for this class instance
         to be used in each summarization call.
@@ -94,4 +103,3 @@ class Summarizer():
         if validation_file_id:
             params["validation_file"] = validation_file_id
         return openai.FineTune.create(**params)
-        

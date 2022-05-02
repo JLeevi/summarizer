@@ -1,8 +1,8 @@
 # Dataset distributions
 training_amount = {
-  "scitldr": 800,
-  "wiki_lingua": 400,
-  "xlsum": 800
+  "scitldr": 1000,
+  "wiki_lingua": 800,
+  "xlsum": 1200
 }
 
 validation_amount = {
@@ -48,3 +48,12 @@ The following text:
 AI: Sure, here is the summary:"""
 
 prompt_empty = f"""{insert_summary}"""
+
+prompt_force_length = f"""Abstractive summarization is the task of generating a short and concise summary that captures the core ideas of the source text. The generated summaries potentially contain new phrases and sentences that may not appear in the source text. 
+
+Create an abstractive summary of the following text in one paragraph. 
+
+The following text: 
+{insert_summary}
+
+Summary:"""

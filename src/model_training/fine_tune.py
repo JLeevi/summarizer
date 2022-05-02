@@ -1,7 +1,13 @@
 import os
 import sys
 import inspect
-from click import prompt
+import openai
+from create_dataset import create_dataset
+from model_training.hyperparams import CURIE_MODEL, get_random_param_options
+from prompt import PromptStyle
+from setup import setup
+from Summarizer import Summarizer
+from utility import get_base_model_name
 
 # abspath = os.path.abspath(__file__)
 # dname = os.path.dirname(abspath)
@@ -10,14 +16,6 @@ from click import prompt
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir) 
-
-import openai
-from create_dataset import create_dataset
-from model_training.hyperparams import CURIE_MODEL, get_random_param_options
-from prompt import PromptStyle
-from setup import setup
-from Summarizer import Summarizer
-from utility import get_base_model_name
 
 # Flag for safety to not accidentally
 # train new models. Set to False to actually run this file.
@@ -113,9 +111,9 @@ def fine_tune_one_model():
     """
     if skip_train: return None
     fixed_params = {
-        "learning_rate_multiplier": 0.01,
+        "learning_rate_multiplier": 1e-05,
         "model": CURIE_MODEL,
-        "batch_size": 4,
+        "batch_size": 32,
         "prompt_loss_weight": 0,
         "n_epochs": 1
     }
