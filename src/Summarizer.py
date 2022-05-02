@@ -35,7 +35,7 @@ class Summarizer():
         """
         is_multi_paragraph = has_multiple_paragraphs(input_text)
         if is_multi_paragraph:
-            prompt = create_prompt(input_text, PromptStyle.BASIC_FORCE_LENGTH)
+            prompt = create_prompt(input_text, PromptStyle.DESCRIPTIVE_FORCE_LENGTH)
         else:
             prompt = create_prompt(input_text, self.prompt_style)
         params = { **self.params, "prompt": prompt }

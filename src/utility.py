@@ -5,7 +5,7 @@ from settings import (
     prompt_chat_bot,
     prompt_descriptive,
     prompt_empty,
-    prompt_force_length,
+    prompt_descriptive_force_length,
     token_padding,
     insert_summary,
     prompt_end,
@@ -35,8 +35,8 @@ def create_prompt(original_text: str, prompt_style: PromptStyle):
         plain_prompt = prompt_chat_bot
     elif prompt_style == PromptStyle.EMPTY:
         plain_prompt = prompt_empty
-    elif prompt_style == PromptStyle.BASIC_FORCE_LENGTH:
-        plain_prompt = prompt_force_length
+    elif prompt_style == PromptStyle.DESCRIPTIVE_FORCE_LENGTH:
+        plain_prompt = prompt_descriptive_force_length
     else:
         raise Exception(f"Valid prompt_style missing, got {prompt_style}")
         

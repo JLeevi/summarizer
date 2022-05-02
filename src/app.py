@@ -7,7 +7,7 @@ from setup import setup
 setup()
 
 def create_summary():
-    summarizer = Summarizer(PromptStyle.BASIC)
+    summarizer = Summarizer(PromptStyle.DESCRIPTIVE)
     text = st.session_state["text"]
     summary = summarizer.summarize(text)
     st.session_state.summary = summary

@@ -49,7 +49,7 @@ AI: Sure, here is the summary:"""
 
 prompt_empty = f"""{insert_summary}"""
 
-prompt_force_length = f"""Abstractive summarization is the task of generating a short and concise summary that captures the core ideas of the source text. The generated summaries potentially contain new phrases and sentences that may not appear in the source text. 
+prompt_descriptive_force_length = f"""Abstractive summarization is the task of generating a short and concise summary that captures the core ideas of the source text. The generated summaries potentially contain new phrases and sentences that may not appear in the source text. 
 
 Create an abstractive summary of the following text in one paragraph. 
 
